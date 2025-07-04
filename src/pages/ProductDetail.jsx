@@ -1,16 +1,24 @@
+// src/pages/ProductDetail.jsx
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 import { products } from '../data/products';
 
-const ProductDetail = ({ addToCart }) => {
+const ProductDetail = () => {
   const { id } = useParams();
-  const product = products.find(p => p.id === parseInt(id));
+  const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState('description'); // Déclaration ajoutée
+  const [activeTab, setActiveTab] = useState('description');
+
+  const product = products.find(p => p.id === parseInt(id));
 
   if (!product) {
-    return <div>Produit non trouvé</div>;
+    return <div className="product-not-found">Produit non trouvé</div>;
   }
+
+  const handleAddToCart = () => {
+    addToCart(product, quantity);
+  };
 
   return (
     <div className="product-detail">
@@ -21,7 +29,7 @@ const ProductDetail = ({ addToCart }) => {
           </div>
           <div className="product-info">
             <h1>{product.name}</h1>
-            <p className="price">{product.price} $</p>
+            <p className="price">{product.price.toFixed(2)} $</p>
             <p className="short-desc">{product.shortDescription}</p>
             
             <div className="ingredients">
@@ -33,15 +41,15 @@ const ProductDetail = ({ addToCart }) => {
               </ul>
             </div>
             
-            <div className="quantity">
+            <div className="quantity-selector">
               <button onClick={() => setQuantity(Math.max(1, quantity - 1))}>-</button>
               <span>{quantity}</span>
               <button onClick={() => setQuantity(quantity + 1)}>+</button>
             </div>
             
             <button 
-              className="add-to-cart"
-              onClick={() => addToCart(product, quantity)}
+              className="add-to-cart-btn"
+              onClick={handleAddToCart}
             >
               Ajouter au panier
             </button>
@@ -50,27 +58,27 @@ const ProductDetail = ({ addToCart }) => {
         
         <div className="product-tabs">
           <button 
-            className={activeTab === 'description' ? 'active' : ''}
+            className={`tab-btn ${activeTab === 'description' ? 'active' : ''}`}
             onClick={() => setActiveTab('description')}
           >
-            Description complète
+            Description
           </button>
           <button 
-            className={activeTab === 'reviews' ? 'active' : ''}
+            className={`tab-btn ${activeTab === 'reviews' ? 'active' : ''}`}
             onClick={() => setActiveTab('reviews')}
           >
-            Avis clients ({product.reviews.length})
+            Avis ({product.reviews.length})
           </button>
         </div>
         
         <div className="tab-content">
           {activeTab === 'description' ? (
-            <div className="description">
-              <h3>Description</h3>
+            <div className="description-content">
+              <h3>Description complète</h3>
               <p>{product.fullDescription}</p>
             </div>
           ) : (
-            <div className="reviews">
+            <div className="reviews-content">
               <h3>Avis clients</h3>
               {product.reviews.length > 0 ? (
                 product.reviews.map((review, index) => (
@@ -79,13 +87,13 @@ const ProductDetail = ({ addToCart }) => {
                       <span className="rating">
                         {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
                       </span>
-                      <span className="author">- {review.author}</span>
+                      <span className="author">{review.author}</span>
                     </div>
-                    <p className="comment">"{review.comment}"</p>
+                    <p className="review-text">{review.comment}</p>
                   </div>
                 ))
               ) : (
-                <p>Aucun avis pour ce produit</p>
+                <p className="no-reviews">Aucun avis pour ce produit</p>
               )}
             </div>
           )}

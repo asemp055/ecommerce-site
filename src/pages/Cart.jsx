@@ -1,78 +1,79 @@
+// src/pages/Cart.jsx
 import { Link } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
-const Cart = ({ cart, setCart }) => {
-  // Fonction pour mettre à jour la quantité
-  const updateQuantity = (id, newQuantity) => {
-    if (newQuantity < 1) {
-      // Si quantité devient 0, supprimer l'article
-      removeItem(id);
-      return;
-    }
-    
-    setCart(cart.map(item => 
-      item.id === id ? { ...item, quantity: newQuantity } : item
-    ));
-  };
+const Cart = () => {
+  const { cart, updateQuantity, removeFromCart } = useCart();
 
-  // Fonction pour supprimer un article
-  const removeItem = (id) => {
-    setCart(cart.filter(item => item.id !== id));
-  };
-
-  // Calcul des totaux
-  const subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const tax = subtotal * 0.15;
   const total = subtotal + tax;
 
   return (
-    <div className="cart">
+    <div className="cart-page">
       <div className="container">
-        <h1>Votre panier</h1>
+        <h1>Votre Panier</h1>
+        
         {cart.length === 0 ? (
           <div className="empty-cart">
             <p>Votre panier est vide</p>
-            <Link to="/products" className="btn">Découvrir nos produits</Link>
+            <Link to="/products" className="continue-shopping-btn">
+              Continuer vos achats
+            </Link>
           </div>
         ) : (
           <div className="cart-content">
             <div className="cart-items">
               {cart.map(item => (
                 <div key={item.id} className="cart-item">
-                  <img src={item.image} alt={item.name} />
-                  <div className="item-info">
-                    <h3>{item.name}</h3>
-                    <p>{item.price} $</p>
+                  <img src={item.image} alt={item.name} className="item-image" />
+                  <div className="item-details">
+                    <h3 className="item-name">{item.name}</h3>
+                    <p className="item-price">{item.price.toFixed(2)} $</p>
                   </div>
-                  <div className="quantity">
-                    <button onClick={() => updateQuantity(item.id, (item.quantity || 1) - 1)}>-</button>
-                    <span>{item.quantity || 1}</span>
-                    <button onClick={() => updateQuantity(item.id, (item.quantity || 1) + 1)}>+</button>
+                  <div className="quantity-controls">
+                    <button 
+                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      className="quantity-btn"
+                    >
+                      -
+                    </button>
+                    <span className="quantity">{item.quantity}</span>
+                    <button 
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      className="quantity-btn"
+                    >
+                      +
+                    </button>
                   </div>
-                  <p className="item-total">{((item.price * (item.quantity || 1)).toFixed(2))} $</p>
+                  <p className="item-total">{(item.price * item.quantity).toFixed(2)} $</p>
                   <button 
-                    className="remove-item" 
-                    onClick={() => removeItem(item.id)}
+                    onClick={() => removeFromCart(item.id)}
+                    className="remove-item-btn"
                   >
                     ×
                   </button>
                 </div>
               ))}
             </div>
+
             <div className="cart-summary">
-              <h3>Résumé de la commande</h3>
+              <h3>Résumé de la Commande</h3>
               <div className="summary-row">
-                <span>Sous-total</span>
+                <span>Sous-total:</span>
                 <span>{subtotal.toFixed(2)} $</span>
               </div>
               <div className="summary-row">
-                <span>Taxes (15%)</span>
+                <span>Taxes (15%):</span>
                 <span>{tax.toFixed(2)} $</span>
               </div>
               <div className="summary-row total">
-                <span>Total</span>
+                <span>Total:</span>
                 <span>{total.toFixed(2)} $</span>
               </div>
-              <Link to="/checkout" className="btn">Passer la commande</Link>
+              <Link to="/checkout" className="checkout-btn">
+                Passer la commande
+              </Link>
             </div>
           </div>
         )}
