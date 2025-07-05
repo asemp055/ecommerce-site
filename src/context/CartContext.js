@@ -1,4 +1,3 @@
-// src/context/CartContext.js
 import { createContext, useState, useContext } from 'react';
 
 const CartContext = createContext();
@@ -36,6 +35,10 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  const clearCart = () => {
+    setCart([]); // 🔥 vide tout le panier
+  };
+
   return (
     <CartContext.Provider 
       value={{ 
@@ -43,6 +46,7 @@ export const CartProvider = ({ children }) => {
         addToCart, 
         removeFromCart, 
         updateQuantity,
+        clearCart, // 👈 Ajouté ici dans le contexte
         cartCount: cart.reduce((sum, item) => sum + item.quantity, 0)
       }}
     >

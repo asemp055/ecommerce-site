@@ -9,6 +9,12 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import './styles/main.css';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import SurveyPage from './pages/SurveyPage';
+
+
+
 
 
 function App() {
@@ -21,9 +27,14 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<ProductList />} />
-              <Route path="/product/:id" element={<ProductDetail />} />
+              <Route path="/produit/:id" element={<ProductDetail />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/survey" element={<SurveyPage />} />
+
+
             </Routes>
           </main>
           <Footer />

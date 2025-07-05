@@ -18,7 +18,7 @@ const Cart = () => {
           <div className="empty-cart">
             <p>Votre panier est vide</p>
             <Link to="/products" className="continue-shopping-btn">
-              Continuer vos achats
+             🛍️ Continuer vos achats
             </Link>
           </div>
         ) : (
@@ -71,9 +71,10 @@ const Cart = () => {
                 <span>Total:</span>
                 <span>{total.toFixed(2)} $</span>
               </div>
-              <Link to="/checkout" className="checkout-btn">
-                Passer la commande
+              <Link to="/checkout" className="checkout-button">
+                🛒 Passer la commande
               </Link>
+              
             </div>
           </div>
         )}

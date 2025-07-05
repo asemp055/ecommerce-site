@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom';  
 import { useState } from 'react';
+import { useCart } from '../context/CartContext'; // ✅ IMPORT clearCart
 import CheckoutSteps from '../components/CheckoutSteps';
 
 const Checkout = () => {
   const [step, setStep] = useState(1);
+  const { clearCart } = useCart(); // ✅ clearCart récupéré
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -21,7 +24,15 @@ const Checkout = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const nextStep = () => setStep(step + 1);
+  const nextStep = () => {
+    const next = step + 1;
+    setStep(next);
+
+    if (next === 3) {
+      clearCart(); // ✅ Vide le panier à la dernière étape
+    }
+  };
+
   const prevStep = () => setStep(step - 1);
 
   const renderStep = () => {
@@ -32,105 +43,49 @@ const Checkout = () => {
             <h2>Livraison</h2>
             <div className="form-group">
               <label>Prénom</label>
-              <input 
-                type="text" 
-                name="firstName" 
-                value={formData.firstName} 
-                onChange={handleChange} 
-                required 
-              />
+              <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required />
             </div>
             <div className="form-group">
               <label>Nom</label>
-              <input 
-                type="text" 
-                name="lastName" 
-                value={formData.lastName} 
-                onChange={handleChange} 
-                required 
-              />
+              <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required />
             </div>
             <div className="form-group">
               <label>Email</label>
-              <input 
-                type="email" 
-                name="email" 
-                value={formData.email} 
-                onChange={handleChange} 
-                required 
-              />
+              <input type="email" name="email" value={formData.email} onChange={handleChange} required />
             </div>
             <div className="form-group">
               <label>Adresse</label>
-              <input 
-                type="text" 
-                name="address" 
-                value={formData.address} 
-                onChange={handleChange} 
-                required 
-              />
+              <input type="text" name="address" value={formData.address} onChange={handleChange} required />
             </div>
             <div className="form-group">
               <label>Ville</label>
-              <input 
-                type="text" 
-                name="city" 
-                value={formData.city} 
-                onChange={handleChange} 
-                required 
-              />
+              <input type="text" name="city" value={formData.city} onChange={handleChange} required />
             </div>
             <div className="form-group">
               <label>Code postal</label>
-              <input 
-                type="text" 
-                name="postalCode" 
-                value={formData.postalCode} 
-                onChange={handleChange} 
-                required 
-              />
+              <input type="text" name="postalCode" value={formData.postalCode} onChange={handleChange} required />
             </div>
             <div className="buttons">
               <button type="button" onClick={nextStep}>Continuer</button>
             </div>
           </div>
         );
+
       case 2:
         return (
           <div className="checkout-step">
             <h2>Paiement</h2>
             <div className="form-group">
               <label>Numéro de carte</label>
-              <input 
-                type="text" 
-                name="cardNumber" 
-                value={formData.cardNumber} 
-                onChange={handleChange} 
-                placeholder="1234 5678 9012 3456" 
-                required 
-              />
+              <input type="text" name="cardNumber" value={formData.cardNumber} onChange={handleChange} placeholder="1234 5678 9012 3456" required />
             </div>
             <div className="form-group">
               <label>Date d'expiration</label>
-              <input 
-                type="text" 
-                name="expiryDate" 
-                value={formData.expiryDate} 
-                onChange={handleChange} 
-                placeholder="MM/AA" 
-                required 
-              />
+              <input type="text" name="expiryDate" value={formData.expiryDate} onChange={handleChange} placeholder="MM/AA" required />
             </div>
             <div className="form-group">
               <label>CVV</label>
-              <input 
-                type="text" 
-                name="cvv" 
-                value={formData.cvv} 
-                onChange={handleChange} 
-                placeholder="123" 
-                required 
-              />
+              <input type="text" name="cvv" value={formData.cvv} onChange={handleChange} placeholder="123" required />
             </div>
             <div className="buttons">
               <button type="button" onClick={prevStep}>Retour</button>
@@ -138,6 +93,7 @@ const Checkout = () => {
             </div>
           </div>
         );
+
       case 3:
         return (
           <div className="checkout-step">
@@ -153,12 +109,12 @@ const Checkout = () => {
               </div>
             </div>
             <div className="buttons">
-                
-            <Link to="/survey" className="btn">Donnez votre avis</Link>
+              <Link to="/survey" className="btn">Donnez votre avis</Link>
               <Link to="/" className="btn">Retour à l'accueil</Link>
             </div>
           </div>
         );
+
       default:
         return null;
     }

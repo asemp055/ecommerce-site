@@ -1,4 +1,3 @@
-// src/pages/ProductDetail.jsx
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
@@ -31,23 +30,25 @@ const ProductDetail = () => {
             <h1>{product.name}</h1>
             <p className="price">{product.price.toFixed(2)} $</p>
             <p className="short-desc">{product.shortDescription}</p>
-            
-            <div className="ingredients">
-              <h3>Ingrédients clés 🌱</h3>
-              <ul>
-                {product.keyIngredients.map((ingredient, index) => (
-                  <li key={index}>{ingredient}</li>
-                ))}
-              </ul>
-            </div>
-            
+
+            {product.keyIngredients && (
+              <div className="ingredients">
+                <h3>Ingrédients clés 🌱</h3>
+                <ul>
+                  {product.keyIngredients.map((ingredient, index) => (
+                    <li key={index}>{ingredient}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             <div className="quantity-selector">
               <button onClick={() => setQuantity(Math.max(1, quantity - 1))}>-</button>
               <span>{quantity}</span>
               <button onClick={() => setQuantity(quantity + 1)}>+</button>
             </div>
-            
-            <button 
+
+            <button
               className="add-to-cart-btn"
               onClick={handleAddToCart}
             >
@@ -55,22 +56,24 @@ const ProductDetail = () => {
             </button>
           </div>
         </div>
-        
+
+        {/* Onglets */}
         <div className="product-tabs">
-          <button 
+          <button
             className={`tab-btn ${activeTab === 'description' ? 'active' : ''}`}
             onClick={() => setActiveTab('description')}
           >
             Description
           </button>
-          <button 
+          <button
             className={`tab-btn ${activeTab === 'reviews' ? 'active' : ''}`}
             onClick={() => setActiveTab('reviews')}
           >
-            Avis ({product.reviews.length})
+            Avis ({product.reviews?.length || 0})
           </button>
         </div>
-        
+
+        {/* Contenu d’onglet */}
         <div className="tab-content">
           {activeTab === 'description' ? (
             <div className="description-content">
@@ -80,7 +83,7 @@ const ProductDetail = () => {
           ) : (
             <div className="reviews-content">
               <h3>Avis clients</h3>
-              {product.reviews.length > 0 ? (
+              {product.reviews && product.reviews.length > 0 ? (
                 product.reviews.map((review, index) => (
                   <div key={index} className="review">
                     <div className="review-header">
@@ -93,7 +96,7 @@ const ProductDetail = () => {
                   </div>
                 ))
               ) : (
-                <p className="no-reviews">Aucun avis pour ce produit</p>
+                <p className="no-reviews">Aucun avis pour ce produit.</p>
               )}
             </div>
           )}

@@ -1,14 +1,19 @@
 // src/components/ProductCard.jsx
 import { useCart } from '../context/CartContext';
+import { Link } from 'react-router-dom'; // 👈 à importer
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
 
   return (
     <div className="product-card">
-      <img src={product.image} alt={product.name} className="product-image" />
+      <Link to={`/produit/${product.id}`}>
+        <img src={product.image} alt={product.name} className="product-image" />
+      </Link>
       <div className="product-info">
-        <h3 className="product-name">{product.name}</h3>
+        <Link to={`/produit/${product.id}`}>
+          <h3 className="product-name">{product.name}</h3>
+        </Link>
         <p className="product-price">{product.price.toFixed(2)} $</p>
         <button 
           className="add-to-cart-btn"
