@@ -26,20 +26,26 @@ const Home = () => {
       </section>
 
       {/* Pourquoi nous choisir */}
-      <section className="why-us">
-        <div className="container">
-          <h2 className="section-title">💚 POURQUOI NOUS CHOISIR ?</h2>
-          <div className="reasons-grid">
-           <div className="reasons-horizontal">
-             <span>100% Québecois</span>
-             <span>•</span>
-             <span>100% Naturel</span>
-             <span>•</span>
-             <span>Zéro Déchet</span>
-           </div>
-          </div>
-        </div>
-      </section>
+     <section className="why-us">
+  <div className="container">
+    <h2 className="section-title">💚 POURQUOI NOUS CHOISIR ?</h2>
+    <div className="reasons-cards">
+      <div className="reason-card">
+        <span role="img" aria-label="Québecois">🍁</span>
+        <p>100% Québecois</p>
+      </div>
+      <div className="reason-card">
+        <span role="img" aria-label="Naturel">🌿</span>
+        <p>100% Naturel</p>
+      </div>
+      <div className="reason-card">
+        <span role="img" aria-label="Zéro Déchet">♻️</span>
+        <p>Zéro Déchet</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* Livraison */}
       <section className="delivery">

@@ -923,3 +923,43 @@ form button:hover {
 .continue-shopping-btn:hover {
   background-color: var(--dark-green);
 }
+
+.reasons-cards {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.reason-card {
+  background: var(--white);
+  border: 2px solid var(--light-green);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  width: 180px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.reason-card:hover {
+  transform: translateY(-5px);
+}
+
+.reason-card span {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.reason-card p {
+  font-weight: bold;
+  color: var(--dark-green);
+  font-size: 1rem;
+}
+.reason-card:hover {
+  transform: translateY(-8px);
+  background-color: #f8fff8;
+  box-shadow: 0 6px 15px rgba(0, 100, 0, 0.1);
+}
